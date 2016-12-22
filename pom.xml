@@ -1,5 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.flytxt</groupId>
@@ -13,18 +13,13 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<spring-cloud-stream.version>Brooklyn.SR1</spring-cloud-stream.version>
-		<docker.classifier></docker.classifier>
+		<java.version>1.8</java.version>
 	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-stream</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-stream-binder-rabbit</artifactId>
-			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
@@ -42,51 +37,18 @@
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
-
 	<build>
-		<finalName>${project.artifactId}}-${docker.classifier}</finalName>
 		<plugins>
 			<plugin>
-				<groupId>com.soebes.maven.plugins</groupId>
-				<artifactId>iterator-maven-plugin</artifactId>
-				<version>0.5.0-RELEASE</version>
-				<executions>
-					<execution>
-					    <phase>package</phase>
-						<goals>
-							<goal>iterator</goal>
-						</goals>
-						<configuration>
-							<itemsWithProperties>
-								<itemWithProperty>
-									<name>jdbc</name>
-									<properties>
-										<docker.classifier>jdbc</docker.classifier>
-									</properties>
-								</itemWithProperty>
-								<itemWithProperty>
-									<name>twitter</name>
-									<properties>
-										<docker.classifier>twitter</docker.classifier>
-									</properties>
-								</itemWithProperty>
-							</itemsWithProperties>
-							<pluginExecutors>
-								<pluginExecutor>
-									<plugin>
-										<groupId>org.springframework.boot</groupId>
-										<artifactId>spring-boot-maven-plugin</artifactId>
-									</plugin>
-								</pluginExecutor>
-							</pluginExecutors>
-						</configuration>	
-						
-					</execution>
-				</executions>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
-
 	<profiles>
 		<profile>
 			<id>deploy</id>
@@ -220,4 +182,8 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
+	<modules>
+		<module>twitter-streaming-api</module>
+    <module>jdbc-streaming-api</module>
+  </modules>
 </project>
